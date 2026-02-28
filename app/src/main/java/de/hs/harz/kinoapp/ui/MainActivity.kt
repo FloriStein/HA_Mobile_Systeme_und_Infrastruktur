@@ -1,9 +1,10 @@
 /**
- * Einstiegspunkt der App.
+ * Modul: MainActivity
+ * Einstiegspunkt der App
  *
- * Es gibt kein XML-Layout – die komplette Oberfläche wird mit Jetpack Compose gebaut.
- * KinoDesign wrappet alles mit dem dunklen Theme, MeineKinoApp kümmert sich um
- * Navigation und die eigentlichen Screens.
+ * Es gibt kein XML-Layout die komplette Oberfläche wird mit Jetpack Compose gebaut
+ * KinoDesign wrappet alles mit dem dunklen Theme MeineKinoApp kümmert sich um
+ * Navigation und die eigentlichen Screens
  */
 package de.hs.harz.kinoapp.ui
 
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         Log.d("KinoApp", "MainActivity gestartet")
 
-        // Kein XML-Layout – alles läuft über Compose
+        // Kein XML-Layout alles läuft über Compose
         setContent {
             KinoDesign {
                 MeineKinoApp()

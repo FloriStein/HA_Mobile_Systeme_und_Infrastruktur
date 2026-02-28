@@ -1,9 +1,10 @@
 /**
- * Screen: Filmliste.
+ * Modul: FilmlisteScreen
+ * Modulbeschreibung: Hauptscreen der App mit der Liste aller Kinofilme
  *
- * Zeigt alle Filme als Karten an, bietet Suche, Hinzufügen (Dialog) und Löschen (mit Bestätigung).
- * Die Daten kommen aus dem MainViewModel – der Screen selbst hat keine direkte DB-Kenntnis.
- * Suche filtert nur die Anzeige, die Datenbank bleibt unverändert.
+ * Zeigt alle Filme als Karten an bietet Suche Hinzufügen Dialog und Löschen mit Bestätigung
+ * Die Daten kommen aus dem MainViewModel der Screen selbst hat keine direkte DB-Kenntnis
+ * Suche filtert nur die Anzeige die Datenbank bleibt unverändert
  */
 package de.hs.harz.kinoapp.ui.compose
 
@@ -33,11 +34,11 @@ import de.hs.harz.kinoapp.ui.main.MainViewModel
 @Composable
 fun FilmlisteScreen(viewModel: MainViewModel) {
     val filme = viewModel.filme
-    var zeigDialog by remember { mutableStateOf(false) }      // AddFilm-Dialog sichtbar?
+    var zeigDialog by remember { mutableStateOf(false) }      // AddFilm-Dialog sichtbar
     var filmZumLoeschen by remember { mutableStateOf<Film?>(null) }  // Lösch-Bestätigung
     var suchtext by remember { mutableStateOf("") }
 
-    // Filtern, wenn im Suchfeld was steht – Titel, Genre oder Beschreibung
+    // Filtern wenn im Suchfeld was steht Titel Genre oder Beschreibung
     val gefilterteFilme = if (suchtext.isBlank()) {
         filme
     } else {
@@ -48,8 +49,8 @@ fun FilmlisteScreen(viewModel: MainViewModel) {
         }
     }
 
-    // Wichtig: Der FAB liegt "oben" auf dem Inhalt (Overlay).
-    // Sonst kann er durch ein `fillMaxSize()` der Liste aus dem sichtbaren Bereich gedrückt werden.
+    // Wichtig Der FAB liegt oben auf dem Inhalt Overlay
+    // Sonst kann er durch fillMaxSize der Liste aus dem sichtbaren Bereich gedrückt werden
     Box(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize()) {
             OutlinedTextField(
@@ -80,7 +81,7 @@ fun FilmlisteScreen(viewModel: MainViewModel) {
                     }
                 }
             } else {
-                // LazyColumn = scrollbare Liste, rendert nur sichtbare Einträge (effizient)
+                // LazyColumn scrollbare Liste rendert nur sichtbare Einträge effizient
                 LazyColumn(
                     modifier = Modifier
                         .weight(1f)
@@ -106,19 +107,19 @@ fun FilmlisteScreen(viewModel: MainViewModel) {
         }
     }
 
-    // Dialog zum Film anlegen – öffnet sich über den FAB
+    // Dialog zum Film anlegen öffnet sich über den FAB
     if (zeigDialog) {
         AddFilmDialog(
             onAbbrechen = { zeigDialog = false },
             onSpeichern = { neuerFilm ->
-                // Speichern passiert über das ViewModel -> Repository -> DAO -> DB.
+                // Speichern passiert über das ViewModel Repository DAO DB
                 viewModel.filmHinzufuegen(neuerFilm)
                 zeigDialog = false
             }
         )
     }
 
-    // Lösch-Dialog – verhindert versehentliches Entfernen
+    // Lösch-Dialog verhindert versehentliches Entfernen
     if (filmZumLoeschen != null) {
         AlertDialog(
             onDismissRequest = { filmZumLoeschen = null },
@@ -141,14 +142,14 @@ fun FilmlisteScreen(viewModel: MainViewModel) {
     }
 }
 
-// Einzelne Film-Karte – langer Druck oder Trash-Icon löschen
+// Einzelne Film-Karte langer Druck oder Trash-Icon löschen
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 fun FilmKarte(film: Film, onLoeschen: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            // Langer Druck auf die ganze Karte = auch Löschen möglich
+            // Langer Druck auf die ganze Karte auch Löschen möglich
             .combinedClickable(
                 onClick = { /* kein normaler Click nötig */ },
                 onLongClick = onLoeschen
@@ -163,7 +164,7 @@ fun FilmKarte(film: Film, onLoeschen: () -> Unit) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Thumbnail: entweder echtes Bild (falls URI gesetzt) oder Film-Icon
+            // Thumbnail entweder echtes Bild falls URI gesetzt oder Film-Icon
             Box(
                 modifier = Modifier
                     .size(56.dp)

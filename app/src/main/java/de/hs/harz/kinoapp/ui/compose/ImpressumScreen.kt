@@ -1,8 +1,9 @@
 /**
- * Info-/Impressum-Screen – nur statischer Text.
+ * Modul: ImpressumScreen
+ * Info Impressum-Screen nur statischer Text
  *
- * Zeigt Impressumsinfos (Urheber, Matrikelnummer etc.). Kein ViewModel nötig,
- * weil keine dynamischen Daten – einfache Composable reicht aus.
+ * Zeigt Impressumsinfos Urheber Matrikelnummer etc Kein ViewModel nötig
+ * weil keine dynamischen Daten einfache Composable reicht aus
  */
 package de.hs.harz.kinoapp.ui.compose
 
@@ -19,7 +20,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun ImpressumScreen() {
-    // Scrollbarer Textblock – verticalScroll für lange Impressumstexte
+    // Scrollbarer Textblock verticalScroll für lange Impressumstexte
     Column(
         modifier = Modifier
             .fillMaxSize()

@@ -1,9 +1,6 @@
 /**
- * Datenbank-Schicht (Room) – zentrale DB der App.
- *
- * Absichtlich simpel gehalten: Singleton (eine Instanz pro Prozess) und
- * Main-Thread-Zugriff via allowMainThreadQueries(). Für eine Hausarbeit okay,
- * in Produktion würde man Coroutines/Flow verwenden.
+ * Modul: AppDatabase (KinoDatabase)
+ * Room-Datenbank Singleton allowMainThreadQueries
  */
 package de.hs.harz.kinoapp.data
 
@@ -20,18 +17,17 @@ abstract class KinoDatabase : RoomDatabase() {
     abstract fun filmDao(): FilmDao
 
     companion object {
-        // Singleton – verhindert mehrere DB-Verbindungen
+        // Singleton verhindert mehrere DB-Verbindungen
         private var instance: KinoDatabase? = null
 
         fun getDatabase(context: Context): KinoDatabase {
-            // Keine Instanz vorhanden – neue DB bauen
+            // Keine Instanz vorhanden neue DB bauen
             if (instance == null) {
                 instance = Room.databaseBuilder(
                     context.applicationContext,
                     KinoDatabase::class.java,
                     "filme_db"
                 )
-                    // Zugriffe im UI-Thread – für die Hausarbeit ausreichend
                     .allowMainThreadQueries()
                     .build()
             }

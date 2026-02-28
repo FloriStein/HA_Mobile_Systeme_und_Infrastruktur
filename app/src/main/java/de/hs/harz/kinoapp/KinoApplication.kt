@@ -1,8 +1,9 @@
 /**
- * Application-Klasse der App.
+ * Modul: KinoApplication (KinoAppInstanz)
+ * Application-Klasse der App
  *
- * Wird beim App-Start einmal erstellt (siehe `AndroidManifest.xml` über `android:name`).
- * Hier nutzen wir das, um beim ersten Start Beispiel-Daten einzufügen, damit man sofort etwas sieht.
+ * Wird beim App-Start einmal erstellt siehe AndroidManifest xml über android name
+ * Hier nutzen wir das um beim ersten Start Beispieldaten einzufügen damit man sofort etwas sieht
  */
 package de.hs.harz.kinoapp
 
@@ -11,7 +12,7 @@ import android.util.Log
 import de.hs.harz.kinoapp.data.KinoDatabase
 import de.hs.harz.kinoapp.model.Film
 
-// Muss im AndroidManifest als android:name eingetragen sein
+// Muss im AndroidManifest als android name eingetragen sein
 class KinoAppInstanz : Application() {
 
     override fun onCreate() {
@@ -20,7 +21,7 @@ class KinoAppInstanz : Application() {
         beispielDatenHinzufuegen()
     }
 
-    // Beim ersten Start ein paar Filme reinladen, damit die App nicht leer ist
+    // Beim ersten Start ein paar Filme reinladen damit die App nicht leer ist
     private fun beispielDatenHinzufuegen() {
         val db = KinoDatabase.getDatabase(this)
         val anzahl = db.filmDao().getAnzahlFilme()
@@ -28,7 +29,7 @@ class KinoAppInstanz : Application() {
         if (anzahl == 0) {
             Log.d("KinoApp", "DB leer, füge Beispielfilme ein")
 
-            // Zwei Beispiel-Filme. Die IDs werden von Room automatisch vergeben (autoGenerate).
+            // Zwei Beispielfilme Die IDs werden von Room automatisch vergeben autoGenerate
             db.filmDao().filmEinfuegen(
                 Film(
                     datum = "15.02.2026",

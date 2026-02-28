@@ -1,10 +1,11 @@
 /**
- * ViewModel der App (MVVM).
+ * Modul: MainViewModel
+ * ViewModel der App MVVM
  *
- * Aufgaben: UI-Zustand (Liste der Filme) halten und Funktionen bereitstellen,
- * die die UI auslösen kann – Hinzufügen und Löschen. Die eigentliche DB-Arbeit
- * macht das Repository, hier nur Orchestrierung.
- * Compose beobachtet `filme` – bei Änderung recomposed die UI automatisch.
+ * Aufgaben UI-Zustand Liste der Filme halten und Funktionen bereitstellen
+ * die die UI auslösen kann Hinzufügen und Löschen Die eigentliche DB-Arbeit
+ * macht das Repository hier nur Orchestrierung
+ * Compose beobachtet filme bei Änderung recomposed die UI automatisch
  */
 package de.hs.harz.kinoapp.ui.main
 
@@ -17,12 +18,12 @@ import de.hs.harz.kinoapp.data.FilmRepository
 import de.hs.harz.kinoapp.data.KinoDatabase
 import de.hs.harz.kinoapp.model.Film
 
-// AndroidViewModel – wir brauchen den Application-Context für die DB-Initialisierung
+// AndroidViewModel wir brauchen den Application-Context für die DB-Initialisierung
 class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     private val repo = FilmRepository(KinoDatabase.getDatabase(app).filmDao())
 
-    // Compose beobachtet diesen State – bei Änderung wird die UI neu gerendert
+    // Compose beobachtet diesen State bei Änderung wird die UI neu gerendert
     var filme: List<Film> by mutableStateOf(emptyList())
         private set
 
@@ -33,7 +34,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     fun filmHinzufuegen(film: Film) {
         repo.insert(film)
-        // Danach neu laden – so sind die IDs und die Reihenfolge garantiert korrekt
+        // Danach neu laden so sind die IDs und die Reihenfolge garantiert korrekt
         reload()
     }
 

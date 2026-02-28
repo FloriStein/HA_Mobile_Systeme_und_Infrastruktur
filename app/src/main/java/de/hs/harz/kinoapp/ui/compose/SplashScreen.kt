@@ -1,8 +1,9 @@
 /**
- * Einfacher Splash-Screen – Logo, Ladeindikator, 3 Sekunden Wartezeit.
+ * Modul: SplashScreen
+ * Einfacher Splash-Screen Logo Ladeindikator 3 Sekunden Wartezeit
  *
- * Nach Ablauf springt die App zur Filmliste (via onWeiter). Der Wechsel passiert
- * in der Navigation, hier nur der Timer mit LaunchedEffect.
+ * Nach Ablauf springt die App zur Filmliste via onWeiter Der Wechsel passiert
+ * in der Navigation hier nur der Timer mit LaunchedEffect
  */
 package de.hs.harz.kinoapp.ui.compose
 
@@ -23,13 +24,13 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(onWeiter: () -> Unit) {
-    // LaunchedEffect läuft einmal beim ersten Anzeigen – dann 3 Sekunden warten
+    // LaunchedEffect läuft einmal beim ersten Anzeigen dann 3 Sekunden warten
     LaunchedEffect(Unit) {
         delay(3000)
         onWeiter()
     }
 
-    // Layout: Logo und Ladeanimation mittig auf dem Screen
+    // Layout Logo und Ladeanimation mittig auf dem Screen
     Column(
         modifier = Modifier
             .fillMaxSize()

@@ -1,11 +1,12 @@
 /**
- * Dialog zum Anlegen eines neuen Films.
+ * Modul: AddFilmDialog
+ * Dialog zum Anlegen eines neuen Films
  *
- * Sammelt alle Eingaben (Datum, Uhrzeit, Titel, Genre, Saal, optional Bild) und
- * gibt am Ende ein Film-Objekt zurück. Das Speichern passiert im FilmlisteScreen/ViewModel –
- * hier bleibt der Dialog „dumm“, er liefert nur die Daten.
- * Wichtig: Content-URIs vom System-Picker werden beim Speichern in den internen
- * App-Speicher kopiert, weil sie sonst nicht immer lesbar bleiben.
+ * Sammelt alle Eingaben Datum Uhrzeit Titel Genre Saal optional Bild und
+ * gibt am Ende ein Film-Objekt zurück Das Speichern passiert im FilmlisteScreen ViewModel
+ * hier bleibt der Dialog dumm er liefert nur die Daten
+ * Wichtig Content-URIs vom System-Picker werden beim Speichern in den internen
+ * App-Speicher kopiert weil sie sonst nicht immer lesbar bleiben
  */
 package de.hs.harz.kinoapp.ui.compose
 
@@ -38,7 +39,7 @@ import java.util.*
 fun AddFilmDialog(onAbbrechen: () -> Unit, onSpeichern: (Film) -> Unit) {
     val context = LocalContext.current
 
-    // Lokale States für alle Formularfelder – hier sammeln wir die Eingaben
+    // Lokale States für alle Formularfelder hier sammeln wir die Eingaben
     var datum by remember { mutableStateOf("") }
     var uhrzeit by remember { mutableStateOf("") }
     var zeigeDatePicker by remember { mutableStateOf(false) }
@@ -59,7 +60,6 @@ fun AddFilmDialog(onAbbrechen: () -> Unit, onSpeichern: (Film) -> Unit) {
     var bildUri by remember { mutableStateOf<Uri?>(null) }
     var fehlerText by remember { mutableStateOf("") }
 
-    // System-Bildpicker öffnen – GetContent braucht i.d.R. keine extra Permission
     val bildAuswahl = rememberLauncherForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri -> bildUri = uri }
@@ -83,7 +83,7 @@ fun AddFilmDialog(onAbbrechen: () -> Unit, onSpeichern: (Film) -> Unit) {
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth()
                     )
-                    // Transparenter Klickbereich über dem Textfeld – Tap öffnet den Picker
+                    // Transparenter Klickbereich über dem Textfeld Tap öffnet den Picker
                     Box(
                         modifier = Modifier
                             .matchParentSize()
@@ -134,7 +134,7 @@ fun AddFilmDialog(onAbbrechen: () -> Unit, onSpeichern: (Film) -> Unit) {
                     singleLine = true
                 )
 
-                // Optional: Bild aus Galerie wählen
+                // Optional Bild aus Galerie wählen
                 Row(
                     Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -162,11 +162,11 @@ fun AddFilmDialog(onAbbrechen: () -> Unit, onSpeichern: (Film) -> Unit) {
         },
         confirmButton = {
             TextButton(onClick = {
-                // Validierung: Datum, Uhrzeit und Titel müssen ausgefüllt sein
+                // Validierung Datum Uhrzeit und Titel müssen ausgefüllt sein
                 if (datum.isBlank() || uhrzeit.isBlank() || titel.isBlank()) {
                     fehlerText = "Bitte Datum, Uhrzeit und Titel ausfüllen!"
                 } else {
-                    // Content-URIs vom Picker sind nicht immer dauerhaft lesbar – daher kopieren wir
+                    // Content-URIs vom Picker sind nicht immer dauerhaft lesbar daher kopieren wir
                     // das Bild in den internen App-Speicher und speichern diese URI
                     val gespeicherteBildUri = bildUri?.let { copyImageToInternalStorage(context, it) }
 
@@ -177,7 +177,7 @@ fun AddFilmDialog(onAbbrechen: () -> Unit, onSpeichern: (Film) -> Unit) {
                         beschreibung = if (beschreibung.isBlank()) "-" else beschreibung.trim(),
                         genre = if (genre.isBlank()) "-" else genre.trim(),
                         saal = if (saal.isBlank()) "-" else saal.trim(),
-                        // URI als String speichern – Room unterstützt keinen Uri-Typ
+                        // URI als String speichern Room unterstützt keinen Uri-Typ
                         bildUri = gespeicherteBildUri
                     )
                     onSpeichern(neuerFilm)
@@ -191,7 +191,7 @@ fun AddFilmDialog(onAbbrechen: () -> Unit, onSpeichern: (Film) -> Unit) {
         }
     )
 
-    // DatePicker als separater Dialog – wird über das Datum-Feld geöffnet
+    // DatePicker als separater Dialog wird über das Datum-Feld geöffnet
     if (zeigeDatePicker) {
         DatePickerDialog(
             onDismissRequest = { zeigeDatePicker = false },
@@ -216,7 +216,7 @@ fun AddFilmDialog(onAbbrechen: () -> Unit, onSpeichern: (Film) -> Unit) {
         }
     }
 
-    // TimePicker – eigener kleiner Dialog mit TimeInput-Composable
+    // TimePicker eigener kleiner Dialog mit TimeInput-Composable
     if (zeigeTimePicker) {
         Dialog(onDismissRequest = { zeigeTimePicker = false }) {
             Surface(
@@ -250,7 +250,7 @@ fun AddFilmDialog(onAbbrechen: () -> Unit, onSpeichern: (Film) -> Unit) {
     }
 }
 
-// Kopiert Bild von Content-URI in App-interne Datei – liefert file://-URI zurück (oder null bei Fehler)
+// Kopiert Bild von Content-URI in App-interne Datei liefert file URI zurück oder null bei Fehler
 private fun copyImageToInternalStorage(context: Context, uri: Uri): String? {
     return runCatching {
         val resolver = context.contentResolver

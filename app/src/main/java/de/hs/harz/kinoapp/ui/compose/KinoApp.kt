@@ -1,3 +1,7 @@
+/**
+ * Modul: KinoApp (MeineKinoApp)
+ * Navigation und App-Shell in Compose Routes startseite filmliste info NavHost TopBar BottomBar
+ */
 package de.hs.harz.kinoapp.ui.compose
 
 import android.app.Application
@@ -17,14 +21,6 @@ import androidx.navigation.compose.rememberNavController
 import de.hs.harz.kinoapp.ui.main.MainViewModel
 import de.hs.harz.kinoapp.ui.main.MainViewModelFactory
 
-/**
- * Navigation und App-Shell in Compose.
- *
- * Hier wird festgelegt:
- * - welche Screens es gibt (Routes: startseite, filmliste, info)
- * - wie man zwischen ihnen navigiert (NavHost + BottomBar)
- * - wann TopBar/BottomBar sichtbar sind (nicht auf dem Splash)
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MeineKinoApp() {
@@ -32,10 +28,10 @@ fun MeineKinoApp() {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val aktuelleRoute = backStackEntry?.destination?.route
 
-    // Scaffold = Grundgerüst mit TopBar, BottomBar und Platz für den Inhalt
+    // Scaffold Grundgerüst mit TopBar BottomBar und Platz für den Inhalt
     Scaffold(
         topBar = {
-            // Auf dem Splash keine TopBar – sieht sonst doof aus
+            // Auf dem Splash keine TopBar sieht sonst doof aus
             if (aktuelleRoute != "startseite") {
                 TopAppBar(title = { Text("Kino App") })
             }
@@ -45,7 +41,6 @@ fun MeineKinoApp() {
                 NavigationBar {
                     NavigationBarItem(
                         selected = aktuelleRoute == "filmliste",
-                        // Einfaches Navigieren – für diese kleine App reicht das
                         onClick = { navController.navigate("filmliste") },
                         icon = { Icon(Icons.Default.Home, contentDescription = null) },
                         label = { Text("Filme") }
@@ -60,7 +55,7 @@ fun MeineKinoApp() {
             }
         }
     ) { padding ->
-        // NavHost = Container für alle Screens, hier werden die Routes definiert
+        // NavHost Container für alle Screens hier werden die Routes definiert
         NavHost(
             navController = navController,
             startDestination = "startseite",
@@ -70,7 +65,7 @@ fun MeineKinoApp() {
                 // Splash lädt ein paar Sekunden und springt dann zur Filmliste
                 SplashScreen(
                     onWeiter = {
-                        // inclusive = true damit man mit Back nicht zurück zum Splash kommt
+                        // inclusive true damit man mit Back nicht zurück zum Splash kommt
                         navController.navigate("filmliste") {
                             popUpTo("startseite") { inclusive = true }
                         }
@@ -78,7 +73,7 @@ fun MeineKinoApp() {
                 )
             }
             composable("filmliste") {
-                // ViewModel braucht Application-Context für die DB – daher die Factory
+                // ViewModel braucht Application-Context für die DB daher die Factory
                 val ctx = LocalContext.current
                 val vm: MainViewModel = viewModel(
                     factory = MainViewModelFactory(ctx.applicationContext as Application)
