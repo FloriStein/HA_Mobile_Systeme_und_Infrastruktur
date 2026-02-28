@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.KinoApp" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:statusBarColor">@color/primary_dark</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:navigationBarColor">@color/primary_dark</item>
+    </style>
+    <style name="Theme.KinoApp.NoActionBar" parent="Theme.KinoApp" />
+</resources>
